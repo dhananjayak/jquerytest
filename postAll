@@ -1,0 +1,34 @@
+var requests = [{index:1},
+                   {index:2}, 
+                   {index:3}, 
+                   {index:4}
+                  ];
+  
+    postAll(requests).then(function(response){
+      console.log(response)
+    })
+
+function postAll(batches, result){
+      if (batches.length === 0) return result;
+      
+      result = result || [];
+      
+      var first = batches[0];
+      var rest = batches.slice(1);
+      
+      return $.ajax({
+          url: "https://reqres.in/api/users",
+          type: "POST",
+          data: {
+            name: "paul rudd " + first.index,
+            movies: ["I Love You Man " + first.index, 
+                     "Role Models " + first.index]
+          }
+      }).then(function(response){
+          return postAll(rest, result.concat(response))
+      });
+    }
+  
+  
+  
+    
